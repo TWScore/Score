@@ -11,7 +11,7 @@ config.read('config.ini',encoding="utf8")
 host = config.get('General', 'host')
 port = config.getint('General', 'port')
 
-@app.route('/TLHS', methods=['GET'])
+@app.route('/TLHC', methods=['GET'])
 def TLHS():
     client_data = request.form
     try:
