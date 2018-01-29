@@ -1,7 +1,7 @@
 import requests
 from pyquery import PyQuery as pq
 import pandas as pd
-import math
+isnan = lambda x:x!=x
 
 def get(account=None, password=None, mode='s'):
     if not(account and password):
@@ -25,10 +25,13 @@ def get(account=None, password=None, mode='s'):
         score = {}
         for i in range(4,33,4):
             score[score_data[i][0]] = dict(zip(score_data[0][1:15],
-            [[score_data[i][j], score_data[i+1][j], score_data[i+2][j], score_data[i+3][j]] for j in range(1,15)]))
+            [[score_data[i][j] if not isnan(score_data[i][j]) else '', 
+            score_data[i+1][j] if not isnan(score_data[i+1][j]) else '', 
+            score_data[i+2][j] if not isnan(score_data[i+2][j]) else '', 
+            score_data[i+3][j] if not isnan(score_data[i+3][j]) else ''] for j in range(1,15)]))
         for key in score:
             for i in range(15,22):
-                score[key][score_data[0][i]] = score_data[list(score.keys()).index(key)+1][i]
+                score[key][score_data[0][i]] = score_data[list(score.keys()).index(key)+1][i] if not isnan(score_data[list(score.keys()).index(key)+1][i]) else ''
         """
         資料格式: {'第1次平時成績':
                     {'◎ 國文Ⅴ':[ 成績 , 平均 , 排名 , 排名人數],
