@@ -11,7 +11,7 @@ config.read('config.ini',encoding="utf8")
 host = config.get('General', 'host')
 port = config.getint('General', 'port')
 
-@app.route('/TLHC', methods=['GET'])
+@app.route('/TLHC', methods=['POST'])
 def TLHS():
     client_data = request.form
     try:
@@ -20,7 +20,7 @@ def TLHS():
         return 'Account or password Error!'
     return server_data if isinstance(server_data, str) else json.dumps(server_data, ensure_ascii=False)
 
-@app.route('/HCHS', methods=['GET'])
+@app.route('/HCHS', methods=['POST'])
 def HCHS():
     client_data = request.form
     try:
