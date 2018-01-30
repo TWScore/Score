@@ -1,5 +1,6 @@
 import TLHCore
 import HCHScore
+import CHGSHore
 from flask import Flask, request
 import json
 import configparser
@@ -29,5 +30,13 @@ def HCHS():
         return 'Account or password Error!'
     return server_data if isinstance(server_data, str) else json.dumps(server_data, ensure_ascii=False)
 
+@app.route('CHGSH', methods=['GET'])
+def CHGSH():
+    client_data = request.form
+    try:
+        server_data = CHGSHore.get(client_data['account'], client_data['password'], client_data['mode'])
+    except ValueError:
+        return 'Account or password Error!'
+    return server_data if isinstance(server_data, str) else json.dumps(server_data, ensure_ascii=False)
 if __name__ == '__main__':
     app.run(host=host, port=port)
