@@ -110,6 +110,7 @@ def get(account=None, password=None, mode='i'):
         infos = {
             'studentId': valid(infos[1][2]),
             'name': valid(infos[1][3]),
+            'class': valid(infos[1][7])
         }
         return infos
 

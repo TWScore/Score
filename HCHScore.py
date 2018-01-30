@@ -53,6 +53,7 @@ def get(account=None, password=None, mode='i'):
         infos = {
             'studentId': valid(infos[1][1]),
             'name': valid(infos[3][1]),
+            'class': valid(infos[3][2])
         }
         return infos
 
