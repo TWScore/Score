@@ -4,39 +4,46 @@ import CHGSHore
 from flask import Flask, request
 import json
 import configparser
-
-app = Flask(__name__)
+import ssl
 
 config = configparser.ConfigParser()
 config.read('config.ini',encoding="utf8")
 host = config.get('General', 'host')
 port = config.getint('General', 'port')
+SSL = config.getboolean('SSL', 'enable')
+if SSL:
+    context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+    context.load_cert_chain(config.get('SSL', 'cert'), config.get('SSL', 'key'))
 
-@app.route('/TLHC', methods=['GET'])
-def TLHS():
+app = Flask(__name__)
+
+def server(client_data, school):
     client_data = request.form
+    server_datas = {
+        'TLHC': TLHCore,
+        'HCHS': HCHScore,
+        'CHGSH': CHGSHore
+    }
     try:
-        server_data = TLHCore.get(client_data['account'], client_data['password'], client_data['mode'])
+        server_data = server_datas[school].get(client_data['account'], client_data['password'], client_data['mode'])
     except ValueError:
         return 'Account or password Error!'
     return server_data if isinstance(server_data, str) else json.dumps(server_data, ensure_ascii=False)
 
-@app.route('/HCHS', methods=['GET'])
+@app.route('/TLHC', methods=['POST'])
+def TLHC():
+    return server(request.form, 'TLHC')
+
+@app.route('/HCHS', methods=['POST'])
 def HCHS():
-    client_data = request.form
-    try:
-        server_data = HCHScore.get(client_data['account'], client_data['password'], client_data['mode'])
-    except ValueError:
-        return 'Account or password Error!'
-    return server_data if isinstance(server_data, str) else json.dumps(server_data, ensure_ascii=False)
+    return server(request.form, 'HCHS')
 
-@app.route('CHGSH', methods=['GET'])
+@app.route('/CHGSH', methods=['POST'])
 def CHGSH():
-    client_data = request.form
-    try:
-        server_data = CHGSHore.get(client_data['account'], client_data['password'], client_data['mode'])
-    except ValueError:
-        return 'Account or password Error!'
-    return server_data if isinstance(server_data, str) else json.dumps(server_data, ensure_ascii=False)
+    return server(request.form, 'CHGSH')
+    
 if __name__ == '__main__':
-    app.run(host=host, port=port)
+    if SSL:
+        app.run(host=host, port=port, ssl_context=context)
+    else:
+        app.run(host=host, port=port)
