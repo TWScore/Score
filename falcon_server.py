@@ -18,9 +18,9 @@ class School:
         client_data = string_to_dict(req.stream.read().decode('utf-8'))
         try:
             server_data = self.lib.get(client_data['account'], client_data['password'], client_data['mode'])
+            resp.body = server_data if isinstance(server_data, str) else json.dumps(server_data, ensure_ascii=False)
         except ValueError:
             resp.body = 'Account or password Error!'
-        resp.body = server_data if isinstance(server_data, str) else json.dumps(server_data, ensure_ascii=False)
 
 api = falcon.API()
 api.add_route('/HCHS', School(HCHScore))
