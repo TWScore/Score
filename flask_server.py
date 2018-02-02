@@ -1,6 +1,5 @@
-import TLHCore
-import HCHScore
-import CHGSHore
+import TLHCore, HCHScore, CHGSHore, PTGSHore
+import PIAN
 from flask import Flask, request
 import json
 import configparser
@@ -41,6 +40,14 @@ def HCHS():
 @app.route('/CHGSH', methods=['POST'])
 def CHGSH():
     return server(request.form, 'CHGSH')
+
+@app.route('/PTGSH', methods=['POST'])
+def CHGSH():
+    return server(request.form, 'PTGSH')
+
+@app.route('/PIAN', methods=['POST'])
+def CHGSH():
+    return server(request.form, 'PIAN')
     
 if __name__ == '__main__':
     if SSL:

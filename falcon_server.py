@@ -1,6 +1,5 @@
-import TLHCore
-import HCHScore
-import CHGSHore
+import TLHCore, HCHScore, CHGSHore, PTGSHore
+import PIAN
 import falcon
 import json
 
@@ -26,3 +25,5 @@ api = falcon.API()
 api.add_route('/HCHS', School(HCHScore))
 api.add_route('/TLHC', School(TLHCore))
 api.add_route('/CHGSH', School(CHGSHore))
+api.add_route('/PTGSH', School(PTGSHore))
+api.add_route('/PIAN', School(PIAN))

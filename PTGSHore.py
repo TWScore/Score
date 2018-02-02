@@ -10,19 +10,20 @@ def get(account=None, password=None, mode='i'):
     s = requests.Session()
     s.encoding = 'big5'
 
-    login = s.post("http://academic.hchs.hc.edu.tw/skyweb/main.asp", data={
+    login = s.post("http://163.24.2.7/skyweb/main.asp", data={
         "txtid":account,
         "txtpwd":password,
         "check":"confirm"}) # Login
     login.encoding = 'big5'
     if "帳號或密碼錯誤" in login.text:
         raise ValueError('Account or password Error!')
-    login = s.get("http://academic.hchs.hc.edu.tw/skyweb/f_left.asp")
+    login = s.get("http://163.24.2.7/skyweb/f_left.asp")
 
     def get_score(): # 學期成績
-        get_score_data = s.get("http://academic.hchs.hc.edu.tw/skyweb/stu/stu_result9.asp")
+        get_score_data = s.get("http://163.24.2.7/skyweb/stu/stu_result9.asp")
         get_score_data.encoding = 'big5'
         score_data = pd.read_html(get_score_data.text)[2] # score table
+        subjects = [i for i in score_data[0]] # 包合總分之類的
         score = {}
         for i in range(4,score_data.shape[1],4):
             score[score_data[i][0]] = dict(zip(score_data[0][1:subjects.index("總分")],
@@ -31,8 +32,9 @@ def get(account=None, password=None, mode='i'):
             score_data[i+2][j] + '/' + score_data[i+3][j] if not (isnan(score_data[i+2][j] or isnan(score_data[i+3][j]))) else '', 
             '',
             ''] for j in range(1,subjects.index("總分"))]))
+            print(score)
         for key in score:
-            for i in range(subjects.index("總分"), subjects.index("總分")+7):
+            for i in range(subjects.index("總分"),subjects.index("總分") + 7):
                 score[key][score_data[0][i]] = valid(score_data[list(score.keys()).index(key)+1][i])
         """
         資料格式: {'第1次平時成績':
@@ -47,13 +49,13 @@ def get(account=None, password=None, mode='i'):
 
     
     def get_info():
-        get_infos = s.get('http://academic.hchs.hc.edu.tw/skyweb/stu/stu_data_qr.asp#a2')
+        get_infos = s.get('http://163.24.2.7/skyweb/stu/stu_result02.asp')
         get_infos.encoding = 'big5'
         infos = pd.read_html(get_infos.text)[2]
         infos = {
-            'studentId': valid(infos[1][1]),
-            'name': valid(infos[3][1]),
-            'class': valid(infos[3][2])
+            'studentId': valid(infos[1][7]),
+            'name': valid(infos[1][0]),
+            'class': valid(pd.read_html(get_infos.text)[0][1][1])
         }
         return infos
 
