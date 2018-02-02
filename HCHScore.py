@@ -23,6 +23,7 @@ def get(account=None, password=None, mode='i'):
         get_score_data = s.get("http://academic.hchs.hc.edu.tw/skyweb/stu/stu_result9.asp")
         get_score_data.encoding = 'big5'
         score_data = pd.read_html(get_score_data.text)[2] # score table
+        subjects = [i for i in score_data[0]] # 包合總分之類的
         score = {}
         for i in range(4,score_data.shape[1],4):
             score[score_data[i][0]] = dict(zip(score_data[0][1:subjects.index("總分")],

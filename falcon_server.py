@@ -15,6 +15,7 @@ class School:
         self.lib=lib
     def on_post(self, req, resp):
         client_data = string_to_dict(req.stream.read().decode('utf-8'))
+        resp.set_header('Access-Control-Allow-Origin', '*')
         try:
             server_data = self.lib.get(client_data['account'], client_data['password'], client_data['mode'])
             resp.body = server_data if isinstance(server_data, str) else json.dumps(server_data, ensure_ascii=False)
