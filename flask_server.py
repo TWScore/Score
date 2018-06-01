@@ -26,7 +26,7 @@ def server(client_data, school):
     try:
         server_data = server_datas[school].get(client_data['account'], client_data['password'], client_data['mode'])
     except ValueError:
-        return 'Account or password Error!'
+        return '{"error":"Account or password Error!"}'
     return server_data if isinstance(server_data, str) else json.dumps(server_data, ensure_ascii=False)
 
 @app.route('/TLHC', methods=['POST'])

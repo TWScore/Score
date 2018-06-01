@@ -28,7 +28,7 @@ class School:
             resp.body = server_data if isinstance(
                 server_data, str) else json.dumps(server_data, ensure_ascii=False)
         except ValueError:
-            resp.body = 'Account or password Error!'
+            resp.body = '{"error":"Account or password Error!"}'
 
 
 api = falcon.API()

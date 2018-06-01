@@ -18,9 +18,12 @@ def get(account=None, password=None, mode='i'):
         'login_r7_c5.y': 0,
         'Chk': 'Y'}) # Login
     login.encoding = 'big5'
-    if "無權使用 請登入" in login.text:
+
+    # 驗證帳號正確
+    loginSuccess=s.get("http://register.tlhc.ylc.edu.tw/hcode/STDINFO.asp")
+    loginSuccess.encoding = 'big5'
+    if "抱歉,您無權限使用本程式!" in loginSuccess.text:
         raise ValueError('Account or password Error!')
-    login = s.get("http://academic.hchs.hc.edu.tw/skyweb/f_left.asp")
 
     def get_score(): # 學期成績
         get_score_data = s.get("http://register.tlhc.ylc.edu.tw/hcode/STD_SCORE.asp")

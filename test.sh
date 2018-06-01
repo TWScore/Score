@@ -1,0 +1,1 @@
+nodemon -e py --ignore '__pycache__/*.py' --exec "gunicorn" -b 0.0.0.0:5000 falcon_server:api 
