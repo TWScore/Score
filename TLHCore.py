@@ -40,7 +40,6 @@ def get(account=None, password=None, mode='i'):
             if not sum_data[0] in score:
                 continue
             score[sum_data[0]].update(dict(zip(sum_titles, sum_data[1:])))
-        print(score)
         """
         資料格式: {'第1次平時成績':
                     {'◎ 國文Ⅴ':[ 成績 , 平均 , 排名 , 類組排, 校排],
