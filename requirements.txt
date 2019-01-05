@@ -32,6 +32,6 @@ shellescape==3.4.1
 six==1.11.0
 urllib3>=1.23
 w3lib==1.19.0
-websockets==4.0.1
+websockets>=5.0
 Werkzeug==0.14.1
 yapf==0.20.2
